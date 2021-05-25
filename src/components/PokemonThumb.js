@@ -6,7 +6,11 @@ const PokemonThumb = ({ id, image, name, type }) => {
   const style = type + ' thumb-container';
   return (
     <div className={style}>
-      <Button as={Link} to={{ pathname: `/pokemon/${id}` }}>
+      <Button
+        style={{ textDecoration: 'none' }}
+        as={Link}
+        to={{ pathname: `/pokemon/${id}` }}
+      >
         <div className="number">
           <small>#0{id}</small>
         </div>
