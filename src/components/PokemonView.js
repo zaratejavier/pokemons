@@ -10,18 +10,21 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Button } from 'semantic-ui-react';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 400,
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: '50em'
+    width: '90em'
   },
   media: {
     height: 0,
@@ -45,10 +48,13 @@ const useStyles = makeStyles(theme => ({
 const PokemonView = props => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [toggleState, setToggleState] = useState(true);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const toggleImage = () => setToggleState(!toggleState);
 
   const [pokemon, setPokemon] = useState({
     name: '',
@@ -76,7 +82,8 @@ const PokemonView = props => {
           name: data.name,
           species: data.species.name,
           image: data.sprites.other.dream_world.front_default,
-          shinyImg: data.sprites.back_shiny,
+          frontDefault: data.sprites.front_default,
+          backDefault: data.sprites.back_default,
           hp: data.stats[0].base_stat,
           attack: data.stats[1].base_stat,
           defense: data.stats[2].base_stat,
@@ -97,7 +104,8 @@ const PokemonView = props => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            <img src={pokemon.shinyImg} />
+            {/* <img src={pokemon.frontDefault} /> */}
+            {pokemon.name.substring(0, 1)}
           </Avatar>
         }
         action={
@@ -107,11 +115,28 @@ const PokemonView = props => {
         }
         title={pokemon.name}
       />
-      <CardMedia
+      {/* <CardMedia
         className={classes.media}
-        image={pokemon.image}
+        image={pokemon.frontDefault}
         title="Paella dish"
-      />
+      /> */}
+
+      <div>
+        {toggleState ? (
+          <img
+            style={{ height: '200px', width: '100%' }}
+            src={pokemon.frontDefault}
+            alt="Cat"
+          />
+        ) : (
+          <img
+            style={{ height: '200px', width: '100%' }}
+            src={pokemon.backDefault}
+            alt="dog"
+          />
+        )}
+      </div>
+
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           This impressive paella is a perfect party dish and a fun meal to cook
@@ -120,11 +145,14 @@ const PokemonView = props => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton aria-label="add to favorites" onClick={toggleImage}>
+          <ArrowBackIosIcon />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
+        </IconButton>
+        <IconButton aria-label="add to favorites" onClick={toggleImage}>
+          <ArrowForwardIosIcon />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {
@@ -168,6 +196,13 @@ const PokemonView = props => {
           </Typography>
         </CardContent>
       </Collapse>
+      {/* <button onClick={toggleImage}>Toggle Image</button> */}
+
+      {/* {toggleState ? (
+        <img src={pokemon.frontDefault} alt="Cat" />
+      ) : (
+        <img src={pokemon.backDefault} alt="dog" />
+      )} */}
     </Card>
   );
 };
